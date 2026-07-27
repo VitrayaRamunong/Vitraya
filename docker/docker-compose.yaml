@@ -161,7 +161,7 @@ services:
       - .env.tailscale
     volumes:
       - ./data/tailscale:/var/lib/tailscale
-      - ./config:/config:ro
+      - ./tailscale/config:/config:ro
     healthcheck:  
       test: ["CMD", "wget", "-qO-", "http://localhost:9002/healthz"]  
       interval: 30s  
