@@ -145,7 +145,7 @@ services:
       - "scraper"
 
   tailscale:  
-    image: ${TRANSLATE_IMAGE:-tailscale/tailscale:latest}  
+    image: ${TAILSCALE_IMAGE:-tailscale/tailscale:latest}  
     container_name: tailscale  
     hostname: ${TS_HOSTNAME:-my-tailscale-node}  
     restart: unless-stopped
