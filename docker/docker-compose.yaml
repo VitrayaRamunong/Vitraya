@@ -167,6 +167,69 @@ services:
       interval: 30s  
       timeout: 5s  
       retries: 3
+  
+  openclaw-gateway:
+    image: ${OPENCLAW_IMAGE:-ghcr.io/openclaw/openclaw:latest}  
+    container_name: openclaw-gateway
+    restart: unless-stopped
+    command:  
+      [  
+        "node",  "dist/index.js",  "gateway",  
+        "--bind",  "${OPENCLAW_GATEWAY_BIND:-lan}",  
+        "--port",  "18789",  
+      ]
+    init: true
+    ports:
+      - "18789:18789"
+    env_file:
+      - .env.openclaw
+    environment:
+      - NODE_ENV=production
+      - OPENCLAW_GATEWAY_HOST=0.0.0.0
+      - OPENCLAW_GATEWAY_PORT=18789
+    volumes:  
+      - "${OPENCLAW_CONFIG_DIR:-${HOME:-/tmp}/.openclaw}:/home/node/.openclaw"  
+      - "${OPENCLAW_WORKSPACE_DIR:-${HOME:-/tmp}/.openclaw/workspace}:/home/node/.openclaw/workspace"  
+      - "${OPENCLAW_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.openclaw-auth-profile-secrets}:/home/node/.config/openclaw"
+    networks:
+      - openclaw-network
+    profiles: ["openclaw"]
+    healthcheck:
+      test: ["CMD", "node", "dist/index.js", "health", "--token", "$${OPENCLAW_GATEWAY_TOKEN:-check}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    cap_drop:  
+      - NET_RAW  
+      - NET_ADMIN  
+    security_opt:  
+      - no-new-privileges:true 
+
+  openclaw-cli:
+    image: ${OPENCLAW_IMAGE:-ghcr.io/openclaw/openclaw:latest}  
+    container_name: openclaw-cli
+    entrypoint: ["node", "dist/index.js"]
+    stdin_open: true
+    tty: true
+    init: true
+    env_file:
+      - .env.openclaw
+    environment:
+      - NODE_ENV=production
+    volumes: 
+      - "${OPENCLAW_CONFIG_DIR:-${HOME:-/tmp}/.openclaw}:/home/node/.openclaw"  
+      - "${OPENCLAW_WORKSPACE_DIR:-${HOME:-/tmp}/.openclaw/workspace}:/home/node/.openclaw/workspace"  
+      - "${OPENCLAW_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.openclaw-auth-profile-secrets}:/home/node/.config/openclaw"
+    network_mode: "service:openclaw-gateway"
+    profiles: ["openclaw"]
+    depends_on:  
+      - openclaw-gateway
+    cap_drop:  
+      - NET_RAW  
+      - NET_ADMIN  
+    security_opt:  
+      - no-new-privileges:true
 
 networks:
   n8n-network:
