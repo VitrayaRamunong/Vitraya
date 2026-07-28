@@ -46,7 +46,7 @@ services:
       n8n-main:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:5678/healthz || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:5679/healthz || exit 1"]
       interval: 45s
       timeout: 10s
       retries: 3
@@ -182,7 +182,7 @@ services:
     ports:
       - "18789:18789"
     env_file:
-      - .env.openclaw
+      - ./openclaw/.env.openclaw
     environment:
       - NODE_ENV=production
       - OPENCLAW_GATEWAY_HOST=0.0.0.0
@@ -193,7 +193,7 @@ services:
       - "${OPENCLAW_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.openclaw-auth-profile-secrets}:/home/node/.config/openclaw"
     networks:
       - openclaw-network
-    profiles: ["openclaw"]
+    profiles: ["ai"]
     healthcheck:
       test: ["CMD", "node", "dist/index.js", "health", "--token", "$${OPENCLAW_GATEWAY_TOKEN:-check}"]
       interval: 30s
@@ -214,7 +214,7 @@ services:
     tty: true
     init: true
     env_file:
-      - .env.openclaw
+      - ./openclaw/.env.openclaw
     environment:
       - NODE_ENV=production
     volumes: 
@@ -222,7 +222,7 @@ services:
       - "${OPENCLAW_WORKSPACE_DIR:-${HOME:-/tmp}/.openclaw/workspace}:/home/node/.openclaw/workspace"  
       - "${OPENCLAW_AUTH_PROFILE_SECRET_DIR:-${HOME:-/tmp}/.openclaw-auth-profile-secrets}:/home/node/.config/openclaw"
     network_mode: "service:openclaw-gateway"
-    profiles: ["openclaw"]
+    profiles: ["ai"]
     depends_on:  
       - openclaw-gateway
     cap_drop:  
@@ -243,7 +243,7 @@ services:
       redis:  
         condition: service_healthy  
     env_file:
-      - .env.langgraph
+      - .langgraph/.env.langgraph
     environment:  
       # 数据库连接（注意 sslmode 根据你的配置调整）  
       DATABASE_URI: postgres://user:password@postgres:5432/langgraph_db?sslmode=require  
