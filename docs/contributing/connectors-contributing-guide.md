@@ -39,7 +39,7 @@ Connector 是将单个 API 平台封装为标准化“原子能力”的模块�
 connectors/
 └── {platform}/
   ├── {module}/
-    ├── connector-{API-name}
+    ├── connector-{API-name}/
       ├── connector.json # I/O 契约 + 元数据
       ├── workflow.json # n8n 工作流
       └── README.md # 使用说明
