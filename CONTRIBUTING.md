@@ -10,9 +10,9 @@
 
 | 贡献类型 | 详细指南 |
 |----------|----------|
-| **Connectors** | [docs/contributing/connectors.md](docs/contributing/connectors.md) |
-| **Patterns** | [docs/contributing/patterns.md](docs/contributing/patterns.md) |
-| **Systems** | [docs/contributing/systems.md](docs/contributing/systems.md) |
+| **Connectors** | [docs/contributing/connectors-contributing-guide.md](docs/contributing/connectors-contributing-guide.md) |
+| **Patterns** | [docs/contributing/patterns-contributing-guide.md](docs/contributing/patterns-contributing-guide.md) |
+| **Systems** | [docs/contributing/systems-contributing-guide.md](docs/contributing/systems-contributing-guide.md) |
 | **文档** | 直接编辑仓库中的 `.md` 文件，提交 PR |
 | **Issue 反馈** | 提交 [GitHub Issue](https://github.com/VitrayaRamunong/Vitraya/issues) |
 
