@@ -143,9 +143,12 @@ Vitraya 是一个开源社区项目，所有 Connectors、Patterns 与 Systems �
 
 ## 📄 License
 
-Vitraya 采用多许可证策略。核心仓库（本仓库）使用 **GPL v3.0**，功能性事实子仓库使用 **Apache 2.0**，贡献者需签署 **CLA**。
+Vitraya 采用多许可证策略：
+- 核心仓库（本仓库）使用 **GPL v3.0**。
+- 功能性事实子仓库使用 **Apache 2.0**。
+- 贡献者需签署 **CLA**。
 
-详见 [LICENSE](LICENSE)、[CLA.md](CLA.md) 与 [LICENSE-INFO.md](LICENSE-INFO.md)。
+详见 [LICENSE](LICENSE)、[CLA.md](CLA.md) 与 [LEGAL.md](LEGAL.md)。
 
 ## 📜 What "Vitraya" Means
 
