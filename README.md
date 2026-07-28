@@ -72,8 +72,30 @@ cd Vitraya/docker
 ```
 
 ### 2. 启动核心执行环境（n8n + PostgreSQL + Redis）
+
+#### 2.1. 准备环境变量文件
 ```bash
-docker-compose up -d
+cp .env.example .env
+cp n8n/.env.n8n.example n8n/.env.n8n
+cp n8n/.env.runners.example n8n/.env.runners
+cp postgres/.env.postgres.example postgres/.env.postgres
+cp redis/.env.redis.example redis/.env.redis
+```
+#### 2.2. 填充必要的环境变量
+
+编辑每个 .env.{service} 文件，至少填入以下必需的配置值：
+- n8n/.env.n8n：n8n密钥、数据库密码等
+- n8n/.env.runners：n8n runners的token、需要的modules或python packages
+- postgres/.env.postgres：POSTGRES_PASSWORD（设置一个强密码）
+- redis/.env.redis：REDIS_PASSWORD（设置一个强密码）
+
+**注意**：docker根目录的.env文件只包含以下环境变量：
+- `COMPOSE_PROFILES`--用于控制启动哪些服务组合。默认只启动以上核心执行环境，如需其他，请按需修改。
+- `xx-IMAGE`--用于控制各组件的版本。
+
+#### 2.3. 一键启动
+```bash
+docker compose up -d
 ```
 
 ### 3. 访问 n8n 控制台
@@ -111,7 +133,7 @@ Vitraya 推荐使用 **Docker Compose** 一键启动核心执行环境，兼容 
 完整部署架构、环境变量配置与生产环境调优，请参阅：
 
 - 完整部署指南 (DEPLOYMENT.md)
-- 各依赖详细部署文档 (docs/deploy/)
+- 各依赖详细部署文档 (docs/deployment/)
 
 ## 🤝 Contributing
 Vitraya 是一个社区驱动的开放基础设施项目。我们欢迎所有形式的贡献，无论你是提交一个新的 Connector、完善一个 Pattern，还是改进文档。
