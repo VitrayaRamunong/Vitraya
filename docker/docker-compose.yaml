@@ -231,6 +231,42 @@ services:
     security_opt:  
       - no-new-privileges:true
 
+  langgraph-api:  
+    image: ${LANGGRAPH_IMAGE:-langchain/langgraph-api:latest}  
+    container_name: langgraph-api  
+    restart: unless-stopped
+    ports:  
+      - "8123:8000" 
+    depends_on:  
+      postgres:  
+        condition: service_healthy  
+      redis:  
+        condition: service_healthy  
+    env_file:
+      - .env.langgraph
+    environment:  
+      # 数据库连接（注意 sslmode 根据你的配置调整）  
+      DATABASE_URI: postgres://user:password@postgres:5432/langgraph_db?sslmode=require  
+      POSTGRES_URI: postgres://user:password@postgres:5432/langgraph_db?sslmode=require  
+      # Redis 连接（带密码）  
+      REDIS_URI: redis://:${REDIS_PASSWORD}@redis:6379  
+      # 图定义  
+      LANGSERVE_GRAPHS: '{"agent": "/app/graph/agent.py:graph"}'  
+      # 认证  
+      LANGSMITH_API_KEY: ${LANGSMITH_API_KEY}  
+      LANGGRAPH_AUTH_TYPE: noop    
+    volumes:
+      - ./langgraph:/app/graph:ro
+    networks:  
+      - n8n-network 
+    profiles: ["graph"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O- http://localhost:8000/ok || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 30s
+
 networks:
   n8n-network:
     driver: bridge
