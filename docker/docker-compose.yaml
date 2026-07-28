@@ -170,6 +170,9 @@ services:
     volumes:
       - ./data/tailscale:/var/lib/tailscale
       - ./tailscale/config:/config:ro
+    networks:
+      - n8n-network
+    profiles: ["webhook"]
     healthcheck:  
       test: ["CMD", "wget", "-qO-", "http://localhost:9002/healthz"]  
       interval: 30s  
