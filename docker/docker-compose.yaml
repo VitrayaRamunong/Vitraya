@@ -6,6 +6,7 @@ services:
     ports:
       - "5678:5678"
     env_file: 
+      - .env
       - ./n8n/.env.n8n
     volumes:
       - ./data/n8n:/home/node/.n8n
@@ -31,6 +32,7 @@ services:
     restart: unless-stopped
     command: worker
     env_file: 
+      - .env
       - ./n8n/.env.n8n
     volumes:
       - ./data/n8n:/home/node/.n8n
@@ -57,6 +59,7 @@ services:
     container_name: n8n-runners
     restart: unless-stopped
     env_file:
+      - .env
       - ./n8n/.env.runners
     volumes:
       - ./n8n/n8n-task-runners.json:/etc/n8n-task-runners.json:ro
@@ -86,6 +89,7 @@ services:
         -c ssl_cert_file=/var/lib/postgresql/server.crt 
         -c ssl_key_file=/var/lib/postgresql/server.key
     env_file:
+      - .env
       - ./postgres/.env.postgres
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
@@ -119,6 +123,7 @@ services:
         --maxmemory 512mb 
         --maxmemory-policy allkeys-lru
     env_file:
+      - .env
       - ./redis/.env.redis
     volumes:
       - ./data/redis:/data
@@ -138,6 +143,8 @@ services:
     command: ["mcp", "--http", "--host", "0.0.0.0", "--port", "8000"]  
     ports:  
       - "8000:8000"
+    env_file:
+      - .env
     shm_size: "2gb"  
     networks: 
       - n8n_network
@@ -158,6 +165,7 @@ services:
       - net.ipv4.ip_forward=1  
       - net.ipv6.conf.all.forwarding=1 
     env_file:
+      - .env
       - ./tailscale/.env.tailscale
     volumes:
       - ./data/tailscale:/var/lib/tailscale
@@ -182,6 +190,7 @@ services:
     ports:
       - "18789:18789"
     env_file:
+      - .env
       - ./openclaw/.env.openclaw
     environment:
       - NODE_ENV=production
@@ -214,6 +223,7 @@ services:
     tty: true
     init: true
     env_file:
+      - .env
       - ./openclaw/.env.openclaw
     environment:
       - NODE_ENV=production
@@ -243,6 +253,7 @@ services:
       redis:  
         condition: service_healthy  
     env_file:
+      - .env
       - .langgraph/.env.langgraph
     environment:  
       # 数据库连接（注意 sslmode 根据你的配置调整）  
